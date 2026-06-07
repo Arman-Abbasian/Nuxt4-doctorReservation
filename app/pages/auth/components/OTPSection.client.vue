@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import VOtpInput from 'vue3-otp-input'
-import { useSendOtp } from '~/composables/api/auth/mutations/useSendOtp'
+import {
+  useSendOtp,
+  useVerifyOtp,
+} from '~/composables/api/auth/mutations/useSendOtp'
 
 //refs
 const otpValue = ref('')
@@ -11,10 +14,11 @@ const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null)
 const props = defineProps<{
   mobile: string
   OTPTime: number
+  otp: string
 }>()
 
 //emits
-const emit = defineEmits(['backToMobile'])
+const emit = defineEmits(['backToMobile', 'onResendOtp'])
 
 //hooks
 const { formattedTime, remainingSeconds, startTimer, stopTimer } = useTimer()
@@ -24,7 +28,14 @@ onMounted(() => {
 })
 
 //API
-const { data, mutate, isPending, error } = useSendOtp()
+const { data, mutate: SendOtpMutate, isPending, error } = useSendOtp()
+
+const {
+  data: VerifyOtp,
+  mutate: VerifyOtpMutate,
+  isPending: VerifyOtpLoading,
+  error: VerifyOtpError,
+} = useVerifyOtp()
 
 onUnmounted(() => {
   stopTimer()
@@ -36,12 +47,20 @@ const backToMobileHandler = () => {
 }
 
 const handleOnComplete = (value: string) => {
-  console.log('api call', { otp: value, mobile: props.mobile })
+  VerifyOtpMutate(
+    { mobile: props.mobile, otp: props.otp },
+    {
+      onSuccess(response) {
+        console.log(response)
+      },
+    },
+  )
 }
 
 const resendCodeHandler = () => {
-  mutate(props.mobile, {
+  SendOtpMutate(props.mobile, {
     onSuccess(response) {
+      emit('onResendOtp', response?.data?.otp ?? '')
       startTimer(response?.data?.remainingSec || 120)
     },
   })

@@ -10,17 +10,24 @@ import OTPSection from './components/OTPSection.client.vue'
 //refs
 const componentNumber = ref(1)
 const mobile = ref<string>('')
+const otp = ref<string>('')
 
 //API
-const { data, mutate, isPending, error } = useSendOtp()
+const { data, mutate: SendOtpMutate, isPending, error } = useSendOtp()
 
 //handler
 const handleSubmit = () => {
-  mutate(mobile.value, {
-    onSuccess() {
+  SendOtpMutate(mobile.value, {
+    onSuccess(data) {
+      otp.value = data.data?.otp ?? ''
       componentNumber.value = 2
     },
   })
+}
+
+const resendOTPHandler = (OTP: string) => {
+  otp.value = OTP
+  debugger
 }
 </script>
 
@@ -34,7 +41,9 @@ const handleSubmit = () => {
     <OTPSection
       v-if="componentNumber === 2"
       :mobile="mobile"
+      :otp="otp"
       @back-to-mobile="componentNumber = 1"
+      @on-resend-otp="resendOTPHandler"
       :OTPTime="data?.data?.remainingSec || 120"
     />
   </div>

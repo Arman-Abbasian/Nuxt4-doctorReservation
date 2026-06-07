@@ -1,5 +1,6 @@
 import { sendOtpSchema } from '~~/server/validator/authValidator'
 import { User } from '~~/server/model/User'
+import { SendOtpData } from '~~/shared/types/auth'
 
 export default defineEventHandler(async (event) => {
   await guestMiddleware(event)
@@ -41,7 +42,10 @@ export default defineEventHandler(async (event) => {
     const remainingMs = otpExpireAt.getTime() - Date.now()
     const remainingSec = Math.ceil(remainingMs / 1000)
 
-    return successResponse(event, 200, 'کد ارسال شد', { otp, remainingSec })
+    return successResponse<SendOtpData>(event, 200, 'کد ارسال شد', {
+      otp,
+      remainingSec,
+    })
   } catch (err: any) {
     return errorResponse(event, 500, 'خطای سرور', err.message)
   }

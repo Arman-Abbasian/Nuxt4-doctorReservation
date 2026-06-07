@@ -33,8 +33,8 @@ export interface IUser {
   role: Role
   isActive: boolean
   isProfileCompleted: boolean
-  otp?: string
-  otpExpireAt?: Date
+  otp?: string | null
+  otpExpireAt?: Date | null
   doctorInfo?: IDoctorInfo
   refreshToken?: string
   createdAt?: Date
