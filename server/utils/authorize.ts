@@ -1,6 +1,6 @@
 import { errorResponse } from './response'
 
-export function authorize(event: any, requiredRole: string) {
+export function authorizeMiddleware(event: any, requiredRole: string) {
   const user = event.context.user
 
   if (user?.role !== requiredRole) {

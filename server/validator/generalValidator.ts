@@ -1,9 +1,10 @@
-import mongoose from 'mongoose'
 import { z } from 'zod'
+import { Types } from 'mongoose'
 
-export const objectId = z
+const objectId = z
   .string()
-  .refine((val) => mongoose.Types.ObjectId.isValid(val), {
+  .trim()
+  .refine((val) => Types.ObjectId.isValid(val), {
     message: 'شناسه معتبر نیست',
   })
 
