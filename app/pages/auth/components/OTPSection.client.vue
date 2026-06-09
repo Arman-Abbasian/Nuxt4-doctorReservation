@@ -51,7 +51,7 @@ const handleOnComplete = (value: string) => {
     { mobile: props.mobile, otp: props.otp },
     {
       onSuccess(response) {
-        console.log(response)
+        navigateTo('/')
       },
     },
   )

@@ -27,7 +27,6 @@ const handleSubmit = () => {
 
 const resendOTPHandler = (OTP: string) => {
   otp.value = OTP
-  debugger
 }
 </script>
 
