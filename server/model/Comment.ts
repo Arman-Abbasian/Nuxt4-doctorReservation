@@ -1,23 +1,23 @@
-import mongoose from 'mongoose'
+import mongoose, { Schema, type InferSchemaType } from 'mongoose'
 
-const CommentSchema = new mongoose.Schema(
+const CommentSchema = new Schema(
   {
     doctorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: Schema.Types.ObjectId,
+      ref: 'User', // فرض بر این است که اطلاعات پزشک هم در مدل User است
       required: [true, 'شناسه پزشک الزامی است.'],
     },
 
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'شناسه کاربر الزامی است.'],
     },
 
     reservationId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Reservation',
-      required: true, // اگر بخواهی فقط کسانی که ویزیت شده‌اند اجازه نظر داشته باشند می‌توانی required کنی
+      required: [true, 'شناسه نوبت الزامی است.'], // الزامی بودن برای حفظ یکپارچگی نظر با ویزیت
     },
 
     rating: {
@@ -37,17 +37,28 @@ const CommentSchema = new mongoose.Schema(
       type: String,
       enum: {
         values: ['pending', 'approved', 'rejected'],
-        message: 'وضعیت نظر معتبر نیست.',
+        message: 'وضعیت {VALUE} برای نظر معتبر نیست.',
       },
       default: 'pending',
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    // برای اینکه فیلدهای مجازی هم در خروجی JSON (مثل APIها) ظاهر شوند
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 )
 
+// --- ایندکس‌ها برای بهینه‌سازی جستجو ---
 CommentSchema.index({ doctorId: 1 })
 CommentSchema.index({ userId: 1 })
-CommentSchema.index({ doctorId: 1, rating: -1 })
-CommentSchema.index({ reservationId: 1 })
+CommentSchema.index({ reservationId: 1 }, { unique: true }) // هر رزرو فقط یک نظر داشته باشد
+CommentSchema.index({ doctorId: 1, status: 1, rating: -1 }) // برای نمایش نظرات تایید شده پزشک بر اساس امتیاز
 
-module.exports = mongoose.model('Comment', CommentSchema)
+// --- استخراج تایپ از اسکیما ---
+export type CommentDocument = InferSchemaType<typeof CommentSchema>
+
+// --- خروجی مدل ---
+export const Comment =
+  mongoose.models.Comment || mongoose.model('Comment', CommentSchema)

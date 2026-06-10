@@ -1,17 +1,17 @@
-import mongoose from 'mongoose'
+import mongoose, { Schema, type InferSchemaType } from 'mongoose'
 
 import { timeRegex, dateRegex } from '~~/server/constant/regex'
 
-const ReservationSchema = new mongoose.Schema(
+const ReservationSchema = new Schema(
   {
     doctorId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'شناسه پزشک الزامی است.'],
     },
 
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'شناسه کاربر الزامی است.'],
     },
@@ -32,7 +32,7 @@ const ReservationSchema = new mongoose.Schema(
       type: String,
       enum: {
         values: ['pending', 'reserved', 'canceledByDoctor', 'canceledByUser'],
-        message: 'وضعیت وارد شده معتبر نیست.',
+        message: 'وضعیت {VALUE} معتبر نیست.',
       },
       default: 'pending',
     },
@@ -43,11 +43,18 @@ const ReservationSchema = new mongoose.Schema(
       maxlength: [500, 'توضیحات نمی‌تواند بیشتر از ۵۰۰ کاراکتر باشد.'],
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 )
 
-/* ایندکس‌ها برای سرعت */
 ReservationSchema.index({ doctorId: 1, date: 1 })
 ReservationSchema.index({ userId: 1, date: 1 })
 
-module.exports = mongoose.model('Reservation', ReservationSchema)
+export type ReservationDocument = InferSchemaType<typeof ReservationSchema> & {
+  _id: mongoose.Types.ObjectId
+}
+
+export const Reservation =
+  mongoose.models.Reservation ||
+  mongoose.model('Reservation', ReservationSchema)
