@@ -1,6 +1,4 @@
-<script setup lang="ts">
-definePageMeta({ layout: 'admin' })
-</script>
+<script setup lang="ts"></script>
 <template>
   <div class="flex items-start gap-4 justify-center">
     <div

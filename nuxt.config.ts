@@ -2,12 +2,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxt/icon',
-    '@vee-validate/nuxt',
-    'shadcn-nuxt',
-  ],
+  modules: ['@nuxt/icon', '@vee-validate/nuxt', '@nuxt/ui'],
   icon: {
     clientBundle: {
       scan: true,
