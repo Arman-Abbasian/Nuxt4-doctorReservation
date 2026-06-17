@@ -27,7 +27,7 @@ export async function deactivateItem<T extends { isActive: boolean }>(
     return successResponse(
       event,
       200,
-      `${name} ${item.isActive ? 'غیرفعال' : 'فعال'} شد`,
+      `${name} ${item.isActive ? 'فعال' : 'غیر فعال'} شد`,
     )
   } catch (err: any) {
     return errorResponse(event, 500, 'خطای سرور', err.message)

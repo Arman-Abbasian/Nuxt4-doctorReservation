@@ -15,11 +15,10 @@ export function useSendOtp() {
 
 export function useVerifyOtp() {
   return useMutation({
-    // 2. ورودی رو به صورت یک آبجکت دریافت کن
     mutationFn: (payload: { mobile: string; otp: string }) => {
       return $fetch('/api/auth/verify-otp', {
         method: 'POST',
-        body: payload, // اینجا آبجکت رو مستقیم بفرست
+        body: payload,
       })
     },
   })
