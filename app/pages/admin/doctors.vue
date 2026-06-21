@@ -37,7 +37,7 @@ const toggleStatus = async (id: string, currentStatus: boolean) => {
       در حال بارگذاری...
     </div>
 
-    <div v-else class="overflow-x-auto bg-white rounded-lg shadow">
+    <div v-else class="flex gap-4 flex-wrap bg-white rounded-lg shadow">
       <UserCart
         v-for="item in doctors?.data || []"
         iconName="lucide:user-round"
@@ -45,6 +45,7 @@ const toggleStatus = async (id: string, currentStatus: boolean) => {
         :userName="item.firstName + ' ' + item.lastName"
         :userMobile="item.mobile"
         :isActive="item.isActive"
+        :isProfileComplete="item.isProfileCompleted"
         @update:isActive="(value) => toggleStatus(item._id, value)"
       />
     </div>
