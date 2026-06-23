@@ -10,8 +10,8 @@ import {
   roleEnum,
   type WeekDay,
   type Role,
-} from '~~/server/constant/enum'
-import { timeRegex, mobileRegex } from '~~/server/constant/regex'
+} from '~~/shared/constant/enum'
+import { mobileRegex, timeRegex } from '~~/shared/constant/regex'
 
 export interface IWorkTime {
   day?: WeekDay

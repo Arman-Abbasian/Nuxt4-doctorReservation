@@ -10,6 +10,6 @@
         <li><NuxtLink to="/admin/specialties">تخصص ها</NuxtLink></li>
       </ul>
     </div>
-    <div class="flex-1 overflow-auto pt-4"><slot /></div>
+    <div class="flex-1 overflow-auto pt-4 px-4"><slot /></div>
   </div>
 </template>

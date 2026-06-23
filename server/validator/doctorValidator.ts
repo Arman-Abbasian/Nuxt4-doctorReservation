@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { WeekDay, weekDayEnum } from '../constant/enum'
-import { timeRegex } from '../constant/regex'
+import { WeekDay, weekDayEnum } from '../../shared/constant/enum'
+import { timeRegex } from '../../shared/constant/regex'
 import mongoose from 'mongoose'
 
 export const updateDoctorProfileSchema = z.object({

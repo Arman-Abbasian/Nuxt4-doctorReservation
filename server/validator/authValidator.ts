@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { mobileRegex } from '../constant/regex'
+import { mobileRegex } from '../../shared/constant/regex'
 
 export const sendOtpSchema = z.object({
   body: z.object({

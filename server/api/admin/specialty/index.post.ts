@@ -3,10 +3,9 @@ import { upsertSpecialtySchema } from '~~/server/validator/adminValidator'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { slug, persianName, englishName, icon } = await validateMiddleware(
-      event,
-      upsertSpecialtySchema,
-    )
+    const {
+      body: { slug, persianName, englishName },
+    } = await validateMiddleware(event, upsertSpecialtySchema)
 
     const query = {
       $or: [{ slug }, { persianName }, { englishName }],
@@ -23,10 +22,9 @@ export default defineEventHandler(async (event) => {
       persianName,
       englishName,
       slug,
-      icon,
     })
 
-    return successResponse(event, 201, 'تخصص با موفقیت ایجاد شد', specialty)
+    return successResponse(event, 201, 'تخصص با موفقیت ایجاد شد')
   } catch (error: any) {
     if (error?.code === 11000) {
       return errorResponse(event, 400, 'اطلاعات وارد شده تکراری است')

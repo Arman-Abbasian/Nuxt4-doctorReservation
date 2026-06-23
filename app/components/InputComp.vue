@@ -43,7 +43,7 @@ const updateValue = (e: Event) => {
       <input
         :type="type"
         :value="modelValue"
-        placeholder="09121472589"
+        :placeholder="placeholder"
         @input="updateValue"
         class="!flex-1 outline-none text-sm bg-transparent"
         :dir="dir"

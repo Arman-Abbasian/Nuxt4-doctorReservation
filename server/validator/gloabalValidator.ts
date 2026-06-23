@@ -2,7 +2,7 @@ import { z } from 'zod'
 import mongoose from 'mongoose'
 
 //constants
-import { dateRegex } from '../constant/regex'
+import { dateRegex } from '../../shared/constant/regex'
 
 //validators
 import { objectId } from './generalValidator'

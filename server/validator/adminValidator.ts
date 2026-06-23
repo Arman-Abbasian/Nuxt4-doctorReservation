@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { slugRegex } from '../constant/regex'
+import { slugRegex } from '../../shared/constant/regex'
 
 export const upsertSpecialtySchema = z.object({
   body: z.object({

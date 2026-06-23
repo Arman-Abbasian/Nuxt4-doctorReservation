@@ -8,7 +8,7 @@ export async function validateMiddleware(event: any, schema: ZodType<any>) {
       query: getQuery(event),
       body: await readBody(event),
     }
-
+    console.log(schema.parse(data))
     return schema.parse(data)
   } catch (error: any) {
     const zodErrors = error?.issues || error?.errors

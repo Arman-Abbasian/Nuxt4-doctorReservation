@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import mongoose from 'mongoose'
 //contants
-import { dateRegex, timeRegex } from '../constant/regex'
+import { dateRegex, timeRegex } from '../../shared/constant/regex'
 
 export const updateUserProfileSchema = z.object({
   body: z.object({

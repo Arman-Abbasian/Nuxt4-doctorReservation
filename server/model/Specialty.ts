@@ -1,5 +1,5 @@
 import mongoose, { Schema, type InferSchemaType } from 'mongoose'
-import { slugRegex } from '~~/server/constant/regex'
+import { slugRegex } from '~~/shared/constant/regex'
 
 const SpecialtySchema = new Schema(
   {

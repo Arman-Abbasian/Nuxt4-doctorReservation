@@ -1,6 +1,5 @@
 import mongoose, { Schema, type InferSchemaType } from 'mongoose'
-
-import { timeRegex, dateRegex } from '~~/server/constant/regex'
+import { dateRegex, timeRegex } from '~~/shared/constant/regex'
 
 const ReservationSchema = new Schema(
   {
