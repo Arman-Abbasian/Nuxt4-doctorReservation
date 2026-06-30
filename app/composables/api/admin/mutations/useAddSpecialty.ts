@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { ADMIN_DOCTORS_QUERY_KEY } from '../queries/useAdminDoctorsQuery'
+import { ADMIN_SPECIALTY_QUERY_KEY } from '../queries/useAdminSpecialtyQuery'
 
 export const useAddSpecialty = () => {
   const queryClient = useQueryClient()
@@ -14,7 +14,7 @@ export const useAddSpecialty = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ADMIN_DOCTORS_QUERY_KEY,
+        queryKey: ADMIN_SPECIALTY_QUERY_KEY,
       })
     },
   })
