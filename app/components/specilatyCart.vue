@@ -7,11 +7,13 @@ const props = defineProps<{
   isActive: boolean
 }>()
 
-const emit = defineEmits(['update:isActive'])
+const emit = defineEmits(['update:isActive', 'edit'])
 </script>
 
 <template>
-  <div class="w-64 h-56 bg-secondary rounded-md p-3 flex flex-col gap-5">
+  <div
+    class="w-64 h-56 bg-secondary rounded-md p-3 flex flex-col gap-5 relative"
+  >
     <div class="flex justify-center items-center">
       <Icon
         :name="iconName"
@@ -34,5 +36,11 @@ const emit = defineEmits(['update:isActive'])
         />
       </div>
     </div>
+    <Icon
+      name="lucide:pen"
+      size="30px"
+      class="p-1 absolute top-1 left-1 cursor-pointer"
+      @click="emit('edit')"
+    />
   </div>
 </template>

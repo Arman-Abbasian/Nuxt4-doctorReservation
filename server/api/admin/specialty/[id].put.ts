@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   try {
     const { id } = await validateMiddleware(event, objectIdSchema)
 
-    const { englishName, persianName, slug, icon } = await validateMiddleware(
+    const { englishName, persianName, slug } = await validateMiddleware(
       event,
       upsertSpecialtySchema,
     )
@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
         englishName,
         persianName,
         slug,
-        icon,
       },
       {
         new: true,

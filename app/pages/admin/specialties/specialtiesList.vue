@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import SpecilatyCart from '~/components/specilatyCart.vue'
-import { useToggleDoctorActivation } from '~/composables/api/admin/mutations/useToggleDoctorActivation'
+import { useToggleSpecialtyActivation } from '~/composables/api/admin/mutations/useToggleSpecialtyActivation'
 import { useAdminSpecialtyQuery } from '~/composables/api/admin/queries/useAdminSpecialtyQuery'
 import { type SpecialtyAdminType } from '~~/shared/types/specialty'
+
+//emit
+const emit = defineEmits(['edit'])
 
 //API
 const { data: initialSpecialties } = await useFetch<
@@ -10,21 +13,26 @@ const { data: initialSpecialties } = await useFetch<
 >('/api/admin/specialty', {
   key: 'admin-specialties-list',
 })
-console.log(initialSpecialties.value)
+
 const { data: specialties, isFetching: specialtiesLoading } =
   useAdminSpecialtyQuery(initialSpecialties.value)
 
-const toggleDoctorActivation = useToggleDoctorActivation()
+const toggleSpecialtyActivation = useToggleSpecialtyActivation()
 
 const toggleStatus = async (id: string, currentStatus: boolean) => {
   try {
-    await toggleDoctorActivation.mutateAsync({
-      doctorId: id,
+    await toggleSpecialtyActivation.mutateAsync({
+      specialtyId: id,
       isActive: currentStatus,
     })
   } catch (err) {
     alert('خطا در تغییر وضعیت')
   }
+}
+
+const editHandler = (id: string) => {
+  const findItem = specialties?.value?.data?.find((item) => item._id == id)
+  if (findItem) emit('edit', findItem)
 }
 </script>
 
@@ -32,7 +40,7 @@ const toggleStatus = async (id: string, currentStatus: boolean) => {
   <div class="p-6">
     <h1 class="text-2xl font-bold mb-6">لیست پزشکان</h1>
 
-    <div v-if="toggleDoctorActivation.isPending.value" class="animate-pulse">
+    <div v-if="toggleSpecialtyActivation.isPending.value" class="animate-pulse">
       در حال بارگذاری...
     </div>
 
@@ -46,6 +54,7 @@ const toggleStatus = async (id: string, currentStatus: boolean) => {
         :slug="item.slug"
         :isActive="item.isActive"
         @update:isActive="(value) => toggleStatus(item._id, value)"
+        @edit="editHandler(item._id)"
       />
     </div>
   </div>

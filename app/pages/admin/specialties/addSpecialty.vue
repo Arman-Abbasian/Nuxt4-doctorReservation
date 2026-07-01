@@ -4,6 +4,12 @@ import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { slugRegex } from '~~/shared/constant/regex'
 import { useAddSpecialty } from '~/composables/api/admin/mutations/useAddSpecialty'
+import type { EditType } from './index.vue'
+
+//props
+const props = defineProps<{
+  editItem: null | EditType
+}>()
 
 //schema
 const schema = toTypedSchema(
@@ -33,6 +39,25 @@ const { value: englishName, errorMessage: englishNameErrorMessage } =
   useField<string>('englishName')
 
 const { value: slug, errorMessage: slugErrorMessage } = useField<string>('slug')
+
+//watch
+watch(
+  () => props.editItem,
+  (value) => {
+    if (value) {
+      resetForm({
+        values: {
+          persianName: value.persianName,
+          englishName: value.englishName,
+          slug: value.slug,
+        },
+      })
+    } else {
+      resetForm()
+    }
+  },
+  { immediate: true },
+)
 
 //API
 const AddSpecialty = useAddSpecialty()
