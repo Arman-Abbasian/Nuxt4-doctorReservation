@@ -2,6 +2,7 @@
 import { getCookie, createError } from 'h3'
 import jwt from 'jsonwebtoken'
 import { errorResponse } from './response'
+import mongoose from 'mongoose'
 
 export async function authenticateMiddleware(event: any) {
   const config = useRuntimeConfig()
@@ -14,6 +15,9 @@ export async function authenticateMiddleware(event: any) {
 
   try {
     const decoded = jwt.verify(token, config.jwtSecret as string) as any
+    if (!mongoose.Types.ObjectId.isValid(decoded.userId)) {
+      return errorResponse(event, 401, 'شناسه کاربر نامعتبر است')
+    }
 
     //  (معادل req.user در اکسپرس)
     event.context.user = {
