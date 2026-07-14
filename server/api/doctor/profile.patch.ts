@@ -1,6 +1,7 @@
 import { Specialty } from '~~/server/model/Specialty'
 import { User } from '~~/server/model/User'
 import { upsertSpecialtySchema } from '~~/server/validator/adminValidator'
+import { successResponse, errorResponse } from '~~/server/utils/response'
 
 export default defineEventHandler(async (event) => {
   try {
