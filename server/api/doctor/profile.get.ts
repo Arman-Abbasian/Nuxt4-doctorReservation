@@ -3,6 +3,15 @@ import { successResponse, errorResponse } from '~~/server/utils/response'
 
 export default defineEventHandler(async (event) => {
   try {
+    const auth = await authenticateMiddleware(event)
+    if (!auth.ok) {
+      return auth.response
+    }
+    const authorize = authorizeMiddleware(event, 'doctor')
+    if (!authorize?.ok) {
+      return authorize?.response
+    }
+
     const doctorId = event.context.user.userId
 
     const doctor = await User.findById(doctorId)
@@ -18,9 +27,9 @@ export default defineEventHandler(async (event) => {
         path: 'doctorInfo.specialty',
         select: 'persianName englishName',
       })
+    console.log({ doctor })
 
-    // ۳. بررسی وجود دکتر
-    if (!doctor) {
+    if (!doctor || doctor.role !== 'doctor') {
       return errorResponse(event, 404, 'دکتر یافت نشد')
     }
 
